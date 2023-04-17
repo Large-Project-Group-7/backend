@@ -203,11 +203,11 @@ function requireFields(jsonBody, arrowFunction, ...fields) {
 app.post("/api/getbookreviews", jsonParser, (req,res) =>{
 
     const missingFields = requireFields(req.body, (jsonBody,errorArray) => {
-        if(Object.keys(jsonBody).length > 1)
+        if(Object.keys(jsonBody).length > 3)
         {
-            errorArray.push("Body for getboookreviews can only contain bookid");
+            errorArray.push("Body for getboookreviews can only contain bookid, page, and perpage");
         }
-      },"bookid");
+      },"bookid","page","perpage");
 
     if(missingFields.errors.length > 0)
     {
@@ -216,7 +216,7 @@ app.post("/api/getbookreviews", jsonParser, (req,res) =>{
     }
     else
     {
-        const promise = getBookReviews(req.body.bookid);
+        const promise = getBookReviews(req.body.bookid, req.body.page, req.body.perpage);
         promise.then(
             function(doc) {
                 console.log("Req: " + JSON.stringify(req.body));
@@ -232,8 +232,11 @@ app.post("/api/getbookreviews", jsonParser, (req,res) =>{
     }
 })
 
-async function getBookReviews(bookID)
+async function getBookReviews(bookID, page, perpage)
 {
+    page -=1;
+    page = (page < 0) ? 0 : page;
+    perpage = (perpage < 0) ? 0 : perpage;
     //OH GOD DAMN IT. The main problem here is that I'm going to end up having to get the user anyways, so may as well make a function for that. 
     const aggregation = [
         {
@@ -270,6 +273,10 @@ async function getBookReviews(bookID)
               'datejoined': 0, 
               'reviews._id': 0
             }
+        },{
+            '$skip': page *perpage
+        }, {
+            '$limit': perpage
         }
       ];
 
