@@ -1,29 +1,34 @@
 import express from "express";
 import{
-    getUser,
-    getRecentBooks,
-    getReviews,
-    addRecentBook,
-    addReview,
-    deleteUser,
-    deleteReview,
+    readUser,
+    readUserRecentBooks,
+    readAllUsers,
+    updateUser,
+    deleteUser
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/auth.js";
 
 const router = express.Router();
 
+/* ======= PRODUCTION ======= */
+// // Read
+// router.get("/:id", verifyToken, readUser);
+
+// // Update
+// router.patch("/:id/:ISBN", verifyToken, updateUser);
+
+// // Delete
+// router.delete("/:id", verifyToken, deleteUser);
+
+/* ======= TESTING ======= */
 // Read
-router.get("/:id", verifyToken, getUser);
-router.get("/:id/recent", verifyToken, getRecentBooks);
-router.get("/:id/reviews", verifyToken, getReviews);
+router.get("/", readAllUsers);
+router.get("/:id", readUser);
 
 // Update
-router.patch("/:id/:ISBN", verifyToken, addRecentBooks);
-router.patch("/:id/:reviews", verifyToken, addReviews);
+router.patch("/:id", updateUser);
 
 // Delete
-router.delete("/:id", verifyToken, deleteUser);
-// This should just delete a single entry from the reviews map
-router.delete("/:id/:reviews", verifyToken, deleteReviews);
+router.delete("/:id", deleteUser);
 
 export default router;

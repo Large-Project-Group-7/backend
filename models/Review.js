@@ -10,7 +10,7 @@ const ReviewSchema = new mongoose.Schema(
         },
         bookID:
         {
-            type: Boolean,
+            type: String,
             required: true,
         },
         score:
@@ -20,12 +20,11 @@ const ReviewSchema = new mongoose.Schema(
         },
         review:
         {
-            type: Map,
-            of: String,
+            type: String,
             required: true,
         },
     },
-    { timestamps: true}
+    { timestamps: true }
 );
 
 const Review = mongoose.model("Review", ReviewSchema);

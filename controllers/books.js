@@ -6,37 +6,67 @@ import Book from "../models/Book.js";
 // updateScore
 // deleteBook (admin only)
 
+// Create
+export const createBook = async (req, res) =>
+{
+    // Need to update so it works with images
+    try
+    {
+        const
+        {
+            ISBN,
+            author,
+            title,
+            publisher,
+            yearPublished,
+            pageCount,
+            summary,
+            reviewCount,
+            totalScore,
+            reviews
+        } = req.body;
+
+        const newBook = new Book
+        ({
+            ISBN,
+            author,
+            title,
+            publisher,
+            yearPublished,
+            pageCount,
+            summary,
+            reviewCount,
+            totalScore,
+            reviews
+        });
+        const savedBook = await newBook.save();
+        res.status(201).json(savedBook);
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+};
+
 // Read
-// Modify this so that it takes in an array and returns all matching users of array
-export const getBook = async (req, res) =>
+export const readBook = async (req, res) =>
 {
     try
     {
         const { id } = req.params;
-        const user = await User.findById(id);
-        res.status(200).json(user);
+        const book = await Book.findById(id);
+        res.status(200).json(book);
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
 };
 
-export const getRecentBooks = async (req, res) =>
+export const readAllBooks = async (req, res) =>
 {
     try
     {
-        const { id } = req.params;
-        const user = await User.findById(id);
-    
-        // This might be wrong. Goal of this is for every ISBN in recentBooks, look in Books collection for respective data.
-        const recent = await Promise.all(user.recentBooks.map((ISBN) => Book.findById(ISBN)));
-        // We can modify the data sent back in this call based on needs of front end
-        const formattedRecents = recent.map(({ ISBN, author, publisher, yearPublished, pageCount, summary, bookCover, reviewCount, totalScore, reviews}) =>
-        {
-            return { ISBN, author, publisher, yearPublished, pageCount, summary, bookCover, reviewCount, totalScore, reviews};
-        });
-        res.status(200).json(formattedRecents);
+        const book = await Book.find();
+        res.status(200).json(book);
     } catch (err) {
-        res.status(404).json({ message: err.message });
+        res.response(404).json({ message: err.message });
     }
 };
 
@@ -46,24 +76,25 @@ export const updateBook = async (req, res) =>
 {
     try
     {
-        const { id, ISBN } = req.params;
-        const user = await User.findById(id);
-        // Change this if we think having duplicates in history is fine.
-        // This is currently written so that no duplicates can be entered
-        if(!user.recentBooks.includes(ISBN))
-        {
-            user.recentBooks.push(ISBN);
-        }
-        await user.save();
+        const { id } = req.params;
+        const updates = req.body;
+        const book = await Book.findOneAndUpdate(id, updates);
+
+        // Uncomment after consulting front end
+        // if(!user.recentBooks.includes(ISBN))
+        // {
+        //     user.recentBooks.push(ISBN);
+        // }
+        // await user.save();
         // Ask frontend if they'd like the response to contain the array of ISBNs
-        res.status(200).json({ message: "Added book to recents"})
+        res.status(200).json(book);
 
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
 };
 
-//TODO
+//TODO: finish this
 export const updateScore = async (req, res) =>
 {
     try
@@ -91,11 +122,9 @@ export const deleteBook = async (req, res) =>
     try
     {
         const { id } = req.params;
-        const user = await User.findById(id);
-        // Delete all reviews from collection found in map and update scores accordingly
-        // Delete all book map entries that match userid
-        // Delete user
-        User.deleteOne(id);
+        const book = await Book.findByIdAndRemove({_id : req.params.id});
+
+        res.status(200).json({message: "Successfully deleted book"});
     } catch (err) {
         res.status(404).json({message: err.message});
     }

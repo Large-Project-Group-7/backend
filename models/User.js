@@ -39,27 +39,19 @@ const UserSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        dateJoined: 
-        {
-            type: String,
-            required: true,
-        },
+
         profilePicture: 
         {
             type: String,
-            required: true, //Might not be required idk
+            required: false, //Might not be required idk
         },
         recentBooks: 
         {
             type: Array,
-            default: [],
-            unique: true,
         },
         reviews: 
         {
-            type: Map,
-            of: String,
-            required: true,
+            type: Array,
         }
     },
     { timestamps: true}

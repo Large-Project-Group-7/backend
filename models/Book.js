@@ -38,11 +38,10 @@ const BookSchema = new mongoose.Schema
             type: String,
             required: true,
         },
-        bookCover: 
-        {
-            type: String,
-            required: true,
-        },
+        // bookCover: 
+        // {
+        //     type: String,
+        // },
         reviewCount: 
         {
             type: Number,
@@ -54,8 +53,7 @@ const BookSchema = new mongoose.Schema
         },
         reviews: 
         {
-            type: Map,
-            required: true,
+            type: Array,
         }
     },
     { timestamps: true}
