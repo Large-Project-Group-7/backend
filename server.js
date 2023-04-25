@@ -9,12 +9,16 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+
+// Path and Controllers
 import authRoutes from "./routes/auth.js"
 import userRoutes from "./routes/users.js"
 import bookRoutes from "./routes/books.js"
 import reviewRoutes from "./routes/reviews.js"
 import { register } from "./controllers/auth.js";
 import { createBook } from "./controllers/books.js"
+
+// Custom Middleware
 import { verifyToken } from "./middleware/auth.js";
 
 // Configuration
@@ -45,7 +49,7 @@ const storage = multer.diskStorage
 });
 const upload = multer({ storage });
 
-// Routes with files
+// PROD ROUTES
 // app.post("auth/register", upload.single("picture"), register);
 // app.post("/books", verifyToken, upload.single("picture"), createBook);
 

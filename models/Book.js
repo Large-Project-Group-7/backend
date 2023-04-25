@@ -25,7 +25,7 @@ const BookSchema = new mongoose.Schema
         },
         yearPublished: 
         {
-            type: String, // Datetime prob
+            type: String,
             required: true,
         },
         pageCount: 

@@ -43,7 +43,7 @@ const UserSchema = new mongoose.Schema(
         profilePicture: 
         {
             type: String,
-            required: false, //Might not be required idk
+            required: false,
         },
         recentBooks: 
         {
