@@ -45,13 +45,13 @@ const UserSchema = new mongoose.Schema(
         },
         recentBooks: 
         {
-            type: [String],
-            default: []
+            type: Array,
+            default: [],
         },
         reviews: 
         {
-            type: [String],
-            default: []
+            type: Array,
+            default: [],
         }
     },
     { timestamps: true}
