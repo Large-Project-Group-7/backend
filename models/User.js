@@ -6,7 +6,6 @@ const UserSchema = new mongoose.Schema(
         {
             type: String,
             required: true,
-            unique: true
         },
         admin:
         {
@@ -27,7 +26,6 @@ const UserSchema = new mongoose.Schema(
         {
             type: String,
             required: true,
-            unique: true,
         },
         password: 
         {
@@ -47,11 +45,13 @@ const UserSchema = new mongoose.Schema(
         },
         recentBooks: 
         {
-            type: Array,
+            type: [String],
+            default: []
         },
         reviews: 
         {
-            type: Array,
+            type: [String],
+            default: []
         }
     },
     { timestamps: true}
