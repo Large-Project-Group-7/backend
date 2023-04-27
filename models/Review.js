@@ -6,7 +6,6 @@ const ReviewSchema = new mongoose.Schema(
         {
             type: String,
             required: true,
-            unique: true
         },
         bookID:
         {
