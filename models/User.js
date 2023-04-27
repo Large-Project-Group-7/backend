@@ -10,17 +10,14 @@ const UserSchema = new mongoose.Schema(
         admin:
         {
             type: Boolean,
-            required: true,
         },
         firstName: 
         {
             type: String,
-            required: true,
         },
         lastName: 
         {
             type: String,
-            required: true,
         },
         email: 
         {
