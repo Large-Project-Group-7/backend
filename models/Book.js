@@ -38,10 +38,10 @@ const BookSchema = new mongoose.Schema
             type: String,
             required: true,
         },
-        // bookCover: 
-        // {
-        //     type: String,
-        // },
+        bookCover: 
+        {
+             type: String,
+        },
         reviewCount: 
         {
             type: Number,
