@@ -96,7 +96,8 @@ export const updateBook = async (req, res) =>
     {
         const { id } = req.params;
         const updates = req.body;
-        const book = await Book.findOneAndUpdate(id, updates);
+        const filter = { _id: id };
+        const book = await Book.findOneAndUpdate(filter, updates);
 
         // Uncomment after consulting front end
         // if(!user.recentBooks.includes(ISBN))
