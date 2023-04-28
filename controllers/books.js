@@ -23,7 +23,8 @@ export const createBook = async (req, res) =>
             summary,
             reviewCount,
             totalScore,
-            reviews
+            reviews,
+            bookCover
         } = req.body;
 
         const newBook = new Book
@@ -37,7 +38,8 @@ export const createBook = async (req, res) =>
             summary,
             reviewCount,
             totalScore,
-            reviews
+            reviews,
+            bookCover
         });
         const savedBook = await newBook.save();
         res.status(201).json(savedBook);
