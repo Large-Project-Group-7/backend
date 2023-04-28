@@ -1,14 +1,28 @@
 import User from "../models/User.js";
 import Book from "../models/Book.js";
-
+import mongoose from "mongoose"
 // Read
 // Modify this so that it takes in an array and returns all matching users of array
 export const readUser = async (req, res) =>
 {
     try
     {
-        const { id } = req.params;
-        const user = await User.findById(id);
+        const id = req.params.id;
+        //Janky, but works
+        var isObjectId = mongoose.Types.ObjectId.isValid(id);
+        //const { id } = req.params;
+        //console.log("Query: " + JSON.stringify(req.query));
+
+        //Take in pagination information from the query, if present
+        var page = req.query.page == null ? 0 : req.query.page-1;
+        page = (page < 0) ? 0 : page;
+        var perpage = req.query.perpage == null ? 10 : req.query.perpage;
+        perpage = (perpage< 0) ? 0 : perpage;
+        const skip = page * perpage;
+
+        const user = (isObjectId) ? await User.findById(id) : await User.find({username:{ $regex: "^"+id, '$options' : 'i'}}).skip(skip).limit(perpage);
+        //user.check = "AppleBees";
+        //req.params.god = "Damnit";
         res.status(200).json(user);
     } catch (err) {
         res.status(404).json({ message: err.message });

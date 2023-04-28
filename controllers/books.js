@@ -1,5 +1,5 @@
 import Book from "../models/Book.js";
-
+import mongoose from "mongoose"
 // createBook
 // getBook
 // updateBook
@@ -51,8 +51,16 @@ export const readBook = async (req, res) =>
 {
     try
     {
-        const { id } = req.params;
-        const book = await Book.findById(id);
+        const id = req.params.id;
+        var isObjectId = mongoose.Types.ObjectId.isValid(id);
+
+        var page = req.query.page == null ? 0 : req.query.page-1;
+        page = (page < 0) ? 0 : page;
+        var perpage = req.query.perpage == null ? 10 : req.query.perpage;
+        perpage = (perpage< 0) ? 0 : perpage;
+        const skip = page * perpage;
+
+        const book = (isObjectId) ? await Book.findById(id) : await Book.find({title:{ $regex: "^"+id, '$options' : 'i'}}).skip(skip).limit(perpage);
         res.status(200).json(book);
     } catch (err) {
         res.status(404).json({ message: err.message });
