@@ -1,6 +1,7 @@
 import Review from "../models/Review.js";
 
 // Create
+//Make sure to add the review to the User Array and the Book Array. 
 export const createReview = async (req, res) =>
 {
     try
@@ -24,6 +25,8 @@ export const createReview = async (req, res) =>
 
 // Read
 // Make this function filter by ID
+
+//TODO: Make it work for finding a user's reviews. 
 export const readReview = async (req, res) =>
 {
     try
@@ -64,6 +67,7 @@ export const updateReview = async (req, res) =>
 
 // Delete
 // This sends 200 even if nothing was deleted. Check if _id exists and if not return 404 status code
+//TODO: Make sure to remove the review id from both the User and the book. 
 export const deleteReview = async (req, res) =>
 {
     try

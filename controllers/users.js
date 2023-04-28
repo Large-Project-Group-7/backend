@@ -7,6 +7,8 @@ export const readUser = async (req, res) =>
 {
     try
     {
+        //00 First Bit - Ascending/Descending Username
+        //00 Second Bit - High/Low Count
         const id = req.params.id;
         //Janky, but works
         var isObjectId = mongoose.Types.ObjectId.isValid(id);

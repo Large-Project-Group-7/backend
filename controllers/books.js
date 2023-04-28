@@ -51,6 +51,11 @@ export const readBook = async (req, res) =>
 {
     try
     {
+        //000 First Bit - Ascending/Descending Title
+        //000 Second Bit - High/Low Review
+        //000 Third Bit - Recent/Not Recent
+        //Recent books Trick: Page = 1, Perpage = 2, only sort by recentness
+
         const id = req.params.id;
         var isObjectId = mongoose.Types.ObjectId.isValid(id);
 
@@ -71,6 +76,9 @@ export const readAllBooks = async (req, res) =>
 {
     try
     {
+         //000 First Bit - Ascending/Descending Title
+        //000 Second Bit - High/Low Review
+        //000 Third Bit - Recent/Not Recent
         const book = await Book.find();
         res.status(200).json(book);
     } catch (err) {
