@@ -59,7 +59,7 @@ export const updateReview = async (req, res) =>
         const { id } = req.params;
         const updates = req.body;
         const filter = { _id: id };
-        const review = await Review.findOneAndUpdate(filter, updates);
+        const review = await Review.findOneAndUpdate(filter, updates, { new: true});
         res.status(200).json(review._id);
     } catch (err) {
         res.status(404).json({ message: err.message });
