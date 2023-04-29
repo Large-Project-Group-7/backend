@@ -7,6 +7,27 @@ export const createReview = async (req, res) =>
     try
     {
         const { userID, bookID, score, review } = req.body;
+        
+        const book = await Book.findById(bookID);
+    
+        if(book == null)
+        {
+            console.log("Book doesn't exist");
+            res.status(404).json({message:"A book with the id " + bookID + " doesn't exist"});
+            return;
+        }
+
+        const user = await User.findById(userID);
+
+        if(user == null)
+        {
+            console.log("Id doesn't exist");
+            res.status(404).json({message:"A user with the id " + userID + " doesn't exist"});
+            return;
+        }
+        //console.log("Book: " + JSON.stringify(book));
+        //console.log("User: " + JSON.stringify(user));
+
         const newReview = new Review
         ({
             userID: userID,
@@ -14,9 +35,25 @@ export const createReview = async (req, res) =>
             score: score,
             review: review,
         });
-        await newReview.save();
-        const rev = await Review.find();
-        res.status(201).json(rev);
+
+        //Response is the new review that's created. I need to keep it. 
+        const response = await newReview.save();
+
+        //If the array doesn't exist, create it. 
+        book.reviews = (book.reviews == null) ? [] : book.reviews;
+        user.reviews = (user.reviews == null) ? [] : user.reviews;
+
+        //Add the review id to the reviews field. 
+        book.reviews.push(response["_id"]);
+        user.reviews.push(response["_id"]);
+        user.reviewCount += 1;
+        book.reviewCount += 1;
+        book.totalScore += score;
+        //Save the user and the book. 
+        await book.save();
+        await user.save();
+
+        res.status(201).json(await Review.find());
         
     } catch (err) {
         res.status(409).json({ message: err.message })
